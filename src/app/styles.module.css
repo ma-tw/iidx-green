@@ -1,0 +1,10 @@
+.title {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.formGroup {
+    max-width: 300px;
+    margin: 10px auto;
+    text-align: start;
+}

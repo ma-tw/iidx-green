@@ -1,95 +1,67 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import styles from "./styles.module.css";
+import { Form, Button } from "react-bootstrap";
+
+const Home = () => {
+  const [green, setGreen] = React.useState("");
+  const [sud, setSud] = React.useState("");
+  const [lift, setLift] = React.useState("");
+  const [initialBpm, setInitialBpm] = React.useState("");
+  const [table, setTable] = React.useState([[]]);
+
+  // g = a / (bpm * hs) / (1000 - w)
+  const a = 53064000;
+  const hs = a / Number(green) / Number(initialBpm) / (1000 - Number(sud) - Number(lift))
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div style={{ textAlign: "center" }}>
+      <h1>IIDX 緑数字計算機</h1>
+      <Form.Group className={styles.formGroup}>
+        <Form.Label>緑数字</Form.Label>
+        <Form.Control
+          type="number"
+          value={green}
+          min={1}
+          placeholder="例: 270"
+          onChange={(e) => setGreen(e.target.value)}
         />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </Form.Group>
+      <Form.Group className={styles.formGroup}>
+        <Form.Label>SUD+ 長さ</Form.Label>
+        <Form.Control
+          type="number"
+          value={sud}
+          min={1}
+          placeholder="例: 100"
+          onChange={(e) => setSud(e.target.value)}
+        />
+      </Form.Group>
+      <Form.Group className={styles.formGroup}>
+        <Form.Label>LIFT 高さ</Form.Label>
+        <Form.Control
+          type="number"
+          value={lift}
+          min={1}
+          placeholder="例: 50"
+          onChange={(e) => setLift(e.target.value)}
+        />
+      </Form.Group>
+      <Form.Group className={styles.formGroup}>
+        <Form.Label>初期BPM</Form.Label>
+        <Form.Control
+          type="number"
+          value={initialBpm}
+          min={1}
+          placeholder="例: 120"
+          onChange={(e) => setInitialBpm(e.target.value)}
+        />
+      </Form.Group>
+      <Button variant="primary">計算</Button>
     </div>
   );
-}
+};
+
+export default Home;
