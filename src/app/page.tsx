@@ -21,6 +21,8 @@ const Home = () => {
   const liftNum = Number(lift);
   const initialBpmNum = Number(initialBpm);
 
+  // FIXME: g = a / (bpm * hs) * (1000 - w)
+  
   // g = a / (bpm * hs) / (1000 - w)
   // a = g * (bpm * hs) * (1000 - w)
   // hs = a / g / bpm / (1000-w)
