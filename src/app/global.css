@@ -1,0 +1,30 @@
+table {
+  table-layout: fixed;
+  margin: 10px auto;
+}
+
+th,
+td {
+  width: 50px;
+}
+
+.btn {
+  margin: 10px;
+}
+
+.wrapper {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 10px 10px;
+  text-align: center;
+}
+
+.formGroup {
+  max-width: 300px;
+  margin: 20px auto;
+  text-align: start;
+}
+
+.warn {
+  color: red;
+}
