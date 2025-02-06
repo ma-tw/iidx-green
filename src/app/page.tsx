@@ -167,7 +167,7 @@ const Home = () => {
                 {gears.map((gear, i) => (
                     <th key={i}>{clamp(hs + 0.5 * gear, 0.5, 10).toFixed(2)}</th>
                 ))}
-              <th>-</th>
+              <th>{hs.toFixed(2)}</th>
             </tr>
           </thead>
           <tbody>
