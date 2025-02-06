@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Form, Button, Table } from "react-bootstrap";
+import { Form, Button, Table, Card } from "react-bootstrap";
 
 const Home = () => {
   const searchParams = useSearchParams();
@@ -21,25 +21,22 @@ const Home = () => {
   const liftNum = Number(lift);
   const initialBpmNum = Number(initialBpm);
 
-  // FIXME: g = a / (bpm * hs) * (1000 - w)
-  
-  // g = a / (bpm * hs) / (1000 - w)
-  // a = g * (bpm * hs) * (1000 - w)
-  // hs = a / g / bpm / (1000-w)
-  const a = 53064000;
-  const hs = a / greenNum / initialBpmNum / (1000 - sudNum - liftNum);
-
   const clamp = (x: number, min: number, max: number) => Math.max(Math.min(x, max), min);
 
+  // g = a / (bpm * hs) * (999 - (sud + lift))
+  // hs = a / g / bpm * (999 - (sud + lift))
+
+  const a = 175.3;
+  const hs = clamp(a * (999 - (sudNum + liftNum)) / greenNum / initialBpmNum, 0.5, 10);
+
   const calculateGreen = (bpm: number, gear: number, useSud: boolean = true) =>
-    Math.round(
-      (a / (bpm * clamp(hs + gear * 0.5, 0.5, 10)) / (1000 - sudNum - liftNum)) *
-        (useSud ? 1 : (1000 - liftNum) / (1000 - sudNum - liftNum))
-    );
+    Math.round((a / (bpm * clamp(hs + 0.5 * gear, 0.5, 10))) * (999 - (useSud ? sudNum + liftNum : liftNum)));
 
   const getBackgroundColor = (value: number) => {
     // #5f9ea0
-    const r = 0x5f, g = 0x9e, b = 0xa0;
+    const r = 0x5f,
+      g = 0x9e,
+      b = 0xa0;
     const magnification = 1 - Math.min(Math.abs(Math.log(value / greenNum)) / 1, 1);
     return `rgb(${r * magnification}, ${g * magnification}, ${b * magnification})`;
   };
@@ -165,6 +162,13 @@ const Home = () => {
               ))}
               <th style={{ background: "lightgray" }}>SUD+ 外し</th>
             </tr>
+            <tr>
+              <th>(HS)</th>
+                {gears.map((gear, i) => (
+                    <th key={i}>{clamp(hs + 0.5 * gear, 0.5, 10).toFixed(2)}</th>
+                ))}
+              <th>-</th>
+            </tr>
           </thead>
           <tbody>
             {bpms.map((bpm, i) => (
@@ -173,12 +177,12 @@ const Home = () => {
                 {gears.map((gear, i) => {
                   const changedGreen = calculateGreen(bpm, gear);
                   return (
-                    <td key={i} style={{ background: getBackgroundColor(changedGreen), color: "limegreen" }}>
+                    <td key={i} style={{ background: getBackgroundColor(changedGreen), color: "#3E0" }}>
                       {changedGreen}
                     </td>
                   );
                 })}
-                <td style={{ background: getBackgroundColor(calculateGreen(bpm, 0, false)), color: "limegreen" }}>
+                <td style={{ background: getBackgroundColor(calculateGreen(bpm, 0, false)), color: "#3E0" }}>
                   {calculateGreen(bpm, 0, false)}
                 </td>
               </tr>
@@ -186,6 +190,18 @@ const Home = () => {
           </tbody>
         </Table>
       )}
+      <Card className="card">
+        <Card.Body>
+          <h3>注意</h3>
+          <ul className="cardList">
+            <li>FHS使用時の値です。</li>
+            <li>初期緑数字に近いほど表の背景が明るくなります。</li>
+            <li>緑数字は a = 175.3 として、green = a / (bpm * hs) * (999 - (sud + lift)) という式より計算しています。</li>
+            <li>計算結果の正確性は保証いたしません。あくまで参考情報としてお使いください。</li>
+          </ul>
+        </Card.Body>
+      </Card>
+      <p>作者: まーた / <a href="https://github.com/ma-tw/iidx-green">GitHub</a> / <a href="https://x.com/ma_tw">X (Twitter)</a></p>
     </div>
   );
 };
