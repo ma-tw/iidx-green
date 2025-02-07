@@ -58,13 +58,13 @@ jobs:
         run: pnpm next build
 
       - name: Add .nojekyll
-        run: touch .next/.nojekyll
+        run: touch out/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           name: nextjs-artifact
-          path: .next
+          path: out
 
   # Deployment job
   deploy:
