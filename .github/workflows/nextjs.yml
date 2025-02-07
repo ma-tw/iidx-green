@@ -57,11 +57,17 @@ jobs:
       - name: Build with Next.js
         run: pnpm next build
 
+      - name: Export static HTML
+        run: pnpm next export
+
+      - name: Add .nojekyll
+        run: touch out/.nojekyll
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           name: nextjs-artifact
-          path: .next
+          path: out
 
   # Deployment job
   deploy:
