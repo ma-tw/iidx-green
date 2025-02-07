@@ -5,14 +5,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Form, Button, Table, Card } from "react-bootstrap";
 
 const Home = () => {
-  return (
-    <React.Suspense fallback={<h1>Loading...</h1>}>
-      <HomeContent />
-    </React.Suspense>
-  );
-};
-
-const HomeContent = () => {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
 
