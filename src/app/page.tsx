@@ -5,6 +5,14 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Form, Button, Table, Card } from "react-bootstrap";
 
 const Home = () => {
+  return (
+    <React.Suspense fallback={<h1>Loading...</h1>}>
+      <HomeContent />
+    </React.Suspense>
+  );
+};
+
+const HomeContent = () => {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
 
@@ -27,7 +35,7 @@ const Home = () => {
   // hs = a / g / bpm * (999 - (sud + lift))
 
   const a = 175.3;
-  const hs = clamp(a * (999 - (sudNum + liftNum)) / greenNum / initialBpmNum, 0.5, 10);
+  const hs = clamp((a * (999 - (sudNum + liftNum))) / greenNum / initialBpmNum, 0.5, 10);
 
   const calculateGreen = (bpm: number, gear: number, useSud: boolean = true) =>
     Math.round((a / (bpm * clamp(hs + 0.5 * gear, 0.5, 10))) * (999 - (useSud ? sudNum + liftNum : liftNum)));
@@ -164,9 +172,9 @@ const Home = () => {
             </tr>
             <tr>
               <th>(HS)</th>
-                {gears.map((gear, i) => (
-                    <th key={i}>{clamp(hs + 0.5 * gear, 0.5, 10).toFixed(2)}</th>
-                ))}
+              {gears.map((gear, i) => (
+                <th key={i}>{clamp(hs + 0.5 * gear, 0.5, 10).toFixed(2)}</th>
+              ))}
               <th>{hs.toFixed(2)}</th>
             </tr>
           </thead>
@@ -196,12 +204,17 @@ const Home = () => {
           <ul className="cardList">
             <li>FHS使用時の値です。</li>
             <li>初期緑数字に近いほど表の背景が明るくなります。</li>
-            <li>緑数字は a = 175.3 として、green = a / (bpm * hs) * (999 - (sud + lift)) という式より計算しています。</li>
+            <li>
+              緑数字は a = 175.3 として、green = a / (bpm * hs) * (999 - (sud + lift)) という式より計算しています。
+            </li>
             <li>計算結果の正確性は保証いたしません。あくまで参考情報としてお使いください。</li>
           </ul>
         </Card.Body>
       </Card>
-      <p>作者: まーた / <a href="https://github.com/ma-tw/iidx-green">GitHub</a> / <a href="https://x.com/ma_tw">X (Twitter)</a></p>
+      <p>
+        作者: まーた / <a href="https://github.com/ma-tw/iidx-green">GitHub</a> /{" "}
+        <a href="https://x.com/ma_tw">X (Twitter)</a>
+      </p>
     </div>
   );
 };
