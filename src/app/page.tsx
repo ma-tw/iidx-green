@@ -61,9 +61,10 @@ const HomeContent = () => {
   }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const form = e.currentTarget;
     const params = new URLSearchParams(searchParams);
-    e.preventDefault();
+
     if (!form.checkValidity()) {
       e.stopPropagation();
     } else if (sudNum + liftNum >= 1000) {
@@ -88,7 +89,7 @@ const HomeContent = () => {
     if (initialBpm) params.set("initialBpm", initialBpm);
     else params.delete("initialBpm");
 
-    replace(`?${params.toString()}`);
+    replace(`?${params.toString()}`, { scroll: false });
 
     setValidated(true);
   };
