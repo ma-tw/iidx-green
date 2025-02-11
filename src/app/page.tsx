@@ -51,7 +51,7 @@ const HomeContent = () => {
 
   const bpms = React.useMemo(() => {
     const result = [];
-    for (let i = (initialBpmNum % 10) + 60; i <= 500; i += 10) result.push(i);
+    for (let i = (initialBpmNum % 10) + 30; i <= 500; i += 10) result.push(i);
     return result;
   }, [initialBpmNum]);
   const gears = React.useMemo(() => {
@@ -158,45 +158,47 @@ const HomeContent = () => {
         - : 白鍵 (下げ) <br />+ : 黒鍵 (上げ)
       </p>
       {showTable && (
-        <Table bordered responsive>
-          <thead>
-            <tr>
-              <th>BPM</th>
-              {gears.map((e, i) => (
-                <th key={i} style={{ background: e === 0 ? "gold" : "white" }}>
-                  {e > 0 && "+"}
-                  {e}個
-                </th>
-              ))}
-              <th style={{ background: "lightgray" }}>SUD+ 外し</th>
-            </tr>
-            <tr>
-              <th>(HS)</th>
-              {gears.map((gear, i) => (
-                <th key={i}>{clamp(hs + 0.5 * gear, 0.5, 10).toFixed(2)}</th>
-              ))}
-              <th>{hs.toFixed(2)}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {bpms.map((bpm, i) => (
-              <tr key={i}>
-                <th style={{ background: bpm === initialBpmNum ? "gold" : "white" }}>{bpm}</th>
-                {gears.map((gear, i) => {
-                  const changedGreen = calculateGreen(bpm, gear);
-                  return (
-                    <td key={i} style={{ background: getBackgroundColor(changedGreen), color: "#3E0" }}>
-                      {changedGreen}
-                    </td>
-                  );
-                })}
-                <td style={{ background: getBackgroundColor(calculateGreen(bpm, 0, false)), color: "#3E0" }}>
-                  {calculateGreen(bpm, 0, false)}
-                </td>
+        <div className="stickyTableWrapper">
+          <Table bordered className="stickyTable">
+            <thead>
+              <tr>
+                <th>BPM</th>
+                {gears.map((e, i) => (
+                  <th key={i} style={{ background: e === 0 ? "gold" : "white" }}>
+                    {e > 0 && "+"}
+                    {e}個
+                  </th>
+                ))}
+                <th style={{ background: "lightgray" }}>SUD+ 外し</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              <tr>
+                <th>(HS)</th>
+                {gears.map((gear, i) => (
+                  <td key={i}>{clamp(hs + 0.5 * gear, 0.5, 10).toFixed(2)}</td>
+                ))}
+                <td>{hs.toFixed(2)}</td>
+              </tr>
+              {bpms.map((bpm, i) => (
+                <tr key={i}>
+                  <th style={{ background: bpm === initialBpmNum ? "gold" : "white" }}>{bpm}</th>
+                  {gears.map((gear, i) => {
+                    const changedGreen = calculateGreen(bpm, gear);
+                    return (
+                      <td key={i} style={{ background: getBackgroundColor(changedGreen), color: "#3E0" }}>
+                        {changedGreen}
+                      </td>
+                    );
+                  })}
+                  <td style={{ background: getBackgroundColor(calculateGreen(bpm, 0, false)), color: "#3E0" }}>
+                    {calculateGreen(bpm, 0, false)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
       )}
       <Card className="card">
         <Card.Body>
