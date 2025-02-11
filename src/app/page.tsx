@@ -102,6 +102,7 @@ const HomeContent = () => {
           <Form.Control
             required
             type="number"
+            inputMode="numeric"
             defaultValue={searchParams.get("green") || ""}
             min={1}
             max={9999}
@@ -115,6 +116,7 @@ const HomeContent = () => {
           <Form.Control
             required
             type="number"
+            inputMode="numeric"
             defaultValue={searchParams.get("sud") || ""}
             min={0}
             max={999}
@@ -128,6 +130,7 @@ const HomeContent = () => {
           <Form.Control
             required
             type="number"
+            inputMode="numeric"
             defaultValue={searchParams.get("lift") || ""}
             min={0}
             max={999}
@@ -141,6 +144,7 @@ const HomeContent = () => {
           <Form.Control
             required
             type="number"
+            inputMode="numeric"
             defaultValue={searchParams.get("initialBpm") || ""}
             min={1}
             max={999}
